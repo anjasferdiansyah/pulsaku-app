@@ -2,9 +2,10 @@ import 'package:testing_flutter/domain/entities/customer.dart';
 
 class CustomerModel extends Customer {
   const CustomerModel({
-    required super.id,
+    super.id,
     required super.name,
     required super.phone,
+    super.isDeleted = false,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
@@ -12,6 +13,7 @@ class CustomerModel extends Customer {
       id: json['id'],
       name: json['name'],
       phone: json['phone'],
+      isDeleted: json['isDeleted'],
     );
   }
 
@@ -20,6 +22,7 @@ class CustomerModel extends Customer {
       id: map['id'],
       name: map['name'],
       phone: map['phone'],
+      isDeleted: map['isDeleted'] == 1,
     );
   }
 
@@ -29,6 +32,7 @@ class CustomerModel extends Customer {
       'id': id,
       'name': name,
       'phone': phone,
+      'isDeleted': isDeleted
     };
   }
 }

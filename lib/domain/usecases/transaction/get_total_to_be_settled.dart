@@ -1,17 +1,22 @@
 import 'package:testing_flutter/core/usecase/use_case.dart';
-import 'package:testing_flutter/domain/repository/transaction_repository.dart';
-import 'package:testing_flutter/domain/usecases/transaction/get_transaction.dart';
+import 'package:testing_flutter/domain/entities/transaction.dart';
 
-class GetTotalToBeSettled implements UseCase<double, TransactionFilter> {
-  final TransactionRepository repository;
-
-  GetTotalToBeSettled(this.repository);
+class GetTotalToBeSettled implements UseCase<double, List<Transaction>> {
+  
+  // Tidak ada repository yang digunakan
+  GetTotalToBeSettled();
 
   @override
-  Future<double> call({TransactionFilter? params}) {
-    return repository.getTotalToBeSettled(
-      startDate: params?.startDate,
-      endDate: params?.endDate,
-    );
+  Future<double> call({List<Transaction>? params}) async {
+    if (params == null || params.isEmpty) {
+      return 0; // Kembalikan 0 jika tidak ada transaksi
+    }
+
+    // Hitung total transaksi yang belum dibayar
+    double totalToBeSettled = params
+        .where((transaction) => !transaction.status) // Hanya transaksi yang belum dibayar
+        .fold(0, (sum, transaction) => sum + transaction.sellingPrice);
+
+    return totalToBeSettled;
   }
 }

@@ -3,11 +3,12 @@ import 'package:equatable/equatable.dart';
 class Transaction extends Equatable {
   
   final int? id;
-  final String customerId;
+  final int customerId;
   final double sellingPrice;
   final double amount;
   final DateTime date;
   final bool status;
+  final String? note;
 
   const Transaction({
     this.id,
@@ -15,6 +16,7 @@ class Transaction extends Equatable {
     required this.customerId,
     required this.amount,
     required this.date,
+    this.note,
     this.status = false
   });
 
@@ -31,12 +33,13 @@ class Transaction extends Equatable {
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
     return Transaction(
-      id: map['id'],
+      id: map['id'] as int?,
       customerId: map['customerId'],
       sellingPrice: map['sellingPrice'],
       amount: map['amount'],
       date: DateTime.parse(map['date']),
       status: map['status'],
+      note: map['note'],
     );
   }
 
@@ -47,7 +50,8 @@ class Transaction extends Equatable {
       'sellingPrice': sellingPrice,
       'amount': amount,
       'date': date.toIso8601String(),
-      'status': status
+      'status': status,
+      'note': note
     };
   }
 

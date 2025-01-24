@@ -14,6 +14,8 @@ import 'package:testing_flutter/domain/usecases/transaction/add_transaction.dart
 import 'package:testing_flutter/domain/usecases/transaction/get_total_to_be_settled.dart';
 import 'package:testing_flutter/domain/usecases/transaction/get_total_transaction.dart';
 import 'package:testing_flutter/domain/usecases/transaction/get_transaction.dart';
+import 'package:testing_flutter/domain/usecases/transaction/update_transaction.dart';
+import 'package:testing_flutter/presentation/provider/transaction_notifier.dart';
 
 final getIt = GetIt.instance;
 
@@ -35,10 +37,19 @@ Future<void> setup() async {
   getIt.registerLazySingleton(() => DeleteCustomer(getIt()));
   getIt.registerLazySingleton(() => UpdateCustomers(getIt()));
 
-  getIt.registerLazySingleton(() => GetTotalTransaction(getIt()));
-  getIt.registerLazySingleton(() => GetTotalToBeSettled(getIt()));
+  getIt.registerLazySingleton(() => GetTotalTransaction());
+  getIt.registerLazySingleton(() => GetTotalToBeSettled());
   getIt.registerLazySingleton(() => GetTransaction(getIt()));
   getIt.registerLazySingleton(() => AddTransaction(getIt()));
+  getIt.registerLazySingleton(() => UpdateTransaction(getIt()));
 
+
+  getIt.registerLazySingleton<TransactionNotifier>(() => TransactionNotifier(
+        getTransactions: getIt<GetTransaction>(),
+        addTransaction: getIt<AddTransaction>(),
+        getTotalTransaction: getIt<GetTotalTransaction>(),
+        getTotalToBeSettled: getIt<GetTotalToBeSettled>(),
+        updateTransaction: getIt<UpdateTransaction>(),
+      ));
   
 }

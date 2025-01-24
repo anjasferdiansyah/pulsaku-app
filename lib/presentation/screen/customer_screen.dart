@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:testing_flutter/presentation/provider/customer_notifier.dart';
 
 class CustomerScreen extends ConsumerWidget {
@@ -46,8 +47,8 @@ class CustomerScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pulsaku"),
-  
+        title: const Text("Konsumen", style: TextStyle(color: Colors.white)),
+        backgroundColor: ColorScheme.of(context).primary,
       ),
       body: GestureDetector(
         onTap: () {
@@ -76,17 +77,21 @@ class CustomerScreen extends ConsumerWidget {
             // Daftar Konsumen dengan Lazy Scroll
             Expanded(
               child: customersAsync.when(
+
+                
                 data: (customers) {
-                  if(customers.isEmpty){
+                  final activeCustomers = customers.where((customer) => customer.isDeleted == false).toList();
+                  Logger().i("Customers: $customers");
+                  if(activeCustomers.isEmpty){
                     return const Center(
                       child: Text("Belum ada konsumen")
                     );
                   }
                   return ListView.builder(
-                  itemCount: customers.length,
+                  itemCount: activeCustomers.length,
                   padding: EdgeInsets.all(8),
                   itemBuilder: (context, index) {
-                    final customer = customers[index];
+                    final customer = activeCustomers[index];
                     return Dismissible(
                       key: ValueKey(customer.id),
                       direction: DismissDirection.endToStart,
@@ -107,7 +112,7 @@ class CustomerScreen extends ConsumerWidget {
                     return false; // Tidak langsung hapus saat swipe
                   },
                       child: Card(
-                        color: Colors.lightBlue,
+                        color: ColorScheme.of(context).primary,
                         child: ListTile(
                           title: Text(customer.name ?? "", style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                           subtitle: Text(customer.phone ?? "", style: const TextStyle(color: Colors.white, fontSize: 16),),

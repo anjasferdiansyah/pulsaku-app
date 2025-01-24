@@ -5,4 +5,5 @@ abstract class TransactionRepository {
   Future<List<Transaction>> getTransactions({DateTime? startDate, DateTime? endDate, bool? status});
   Future<double> getTotalTransactions({DateTime? startDate, DateTime? endDate});
   Future<double> getTotalToBeSettled({DateTime? startDate, DateTime? endDate});
+  Future<void> updateTransaction(int id);
 }

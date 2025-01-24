@@ -5,12 +5,15 @@ import 'package:testing_flutter/domain/entities/customer.dart';
 import 'package:testing_flutter/layout/app_layout.dart';
 import 'package:testing_flutter/presentation/screen/add_or_update_customer_screen.dart';
 import 'package:testing_flutter/presentation/screen/customer_screen.dart';
+import 'package:testing_flutter/presentation/screen/transaction_screen.dart';
+import 'package:testing_flutter/presentation/screen/add_transaction.dart';
+
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/list-transaction',
+  initialLocation: '/transaction',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => AppLayout(
@@ -20,8 +23,14 @@ final appRouter = GoRouter(
             StatefulShellBranch(
           routes: [
             GoRoute(
-              path: "/list-transaction",
-              builder: (context, state) => const Placeholder(),
+              path: "/transaction",
+              routes : [
+                GoRoute(
+                  path: "/add-transaction",
+                  builder: (context, state) => const AddTransactionScreen(),
+                )
+              ],
+              builder: (context, state) => const TransactionScreen(),
             )
           ]
         ),
@@ -45,14 +54,6 @@ final appRouter = GoRouter(
             )
           ]
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: "/transaction",
-              builder: (context, state) => const Placeholder(),
-            )
-          ]
-        )
     
       ]
     )

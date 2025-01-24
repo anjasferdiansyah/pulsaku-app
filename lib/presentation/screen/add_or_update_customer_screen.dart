@@ -74,7 +74,7 @@ class _AddOrUpdateCustomerScreenState extends ConsumerState<AddOrUpdateCustomerS
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    final customer = Customer(id: widget.existingCustomer?.id, name: _nameController.text, phone: _phoneController.text);
+                    final customer = Customer(id: widget.existingCustomer?.id, name: _nameController.text, phone: _phoneController.text, isDeleted: false);
 
                     if(isEditing){
                       ref 

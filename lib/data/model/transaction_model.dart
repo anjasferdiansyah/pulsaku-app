@@ -2,12 +2,13 @@ import 'package:testing_flutter/domain/entities/transaction.dart';
 
 class TransactionModel extends Transaction {
   const TransactionModel({
-    required super.id,
+    super.id,
     required super.customerId,
     required super.date,
     required super.amount,
     required super.sellingPrice,
-    required super.status
+    required super.status,
+    super.note
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -18,9 +19,11 @@ class TransactionModel extends Transaction {
       amount: json['amount'],
       sellingPrice: json['sellingPrice'],
       status: json['status'],
+      note: json['note'],
     );
   }
 
+  // Mengonversi data dari Map (database) ke objek model
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
       id: map['id'],
@@ -28,10 +31,12 @@ class TransactionModel extends Transaction {
       date: DateTime.parse(map['date']),
       amount: map['amount'],
       sellingPrice: map['sellingPrice'],
-      status: map['status'],
+      note: map['note'],
+      status: map['status'] == 1, // Mengonversi integer ke boolean
     );
   }
 
+  // Mengonversi objek model ke Map (untuk disimpan ke database)
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -40,7 +45,9 @@ class TransactionModel extends Transaction {
       'date': date.toIso8601String(),
       'amount': amount,
       'sellingPrice': sellingPrice,
-      'status': status
+      'status': status ? 1 : 0, // Mengonversi boolean ke integer
+      'note': note
     };
   }
+
 }

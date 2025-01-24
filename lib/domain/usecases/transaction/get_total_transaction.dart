@@ -1,19 +1,16 @@
 import 'package:testing_flutter/core/usecase/use_case.dart';
-import 'package:testing_flutter/domain/repository/transaction_repository.dart';
-import 'package:testing_flutter/domain/usecases/transaction/get_transaction.dart';
+import 'package:testing_flutter/domain/entities/transaction.dart';
 
-class GetTotalTransaction implements UseCase<double, TransactionFilter> {
- 
-  final TransactionRepository transactionRepository;
-
-  GetTotalTransaction(this.transactionRepository);
-
+class GetTotalTransaction implements UseCase<double, List<Transaction>> {
   @override
-  Future<double> call({TransactionFilter? params}) async {
-    return await transactionRepository.getTotalTransactions(
-      startDate: params?.startDate,
-      endDate: params?.endDate
-    );
-  }
+  Future<double> call({List<Transaction>? params}) async {
+    if (params == null || params.isEmpty) {
+      return 0;
+    }
 
+    // Hitung total transaksi dan total yang harus disetor
+    double totalTransaksi = params.fold(0, (sum, transaction) => sum + transaction.amount);
+
+    return totalTransaksi;
+  }
 }

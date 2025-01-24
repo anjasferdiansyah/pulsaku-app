@@ -11,7 +11,9 @@ class CustomerLocalStorage {
 
   Future<List<Customer>> getCustomers() async {
     final db = await databaseHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('customers');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'customers'
+      );
     return List.generate(maps.length, (index) => CustomerModel.fromMap(maps[index]));
   }
 
@@ -37,7 +39,12 @@ class CustomerLocalStorage {
 
   Future<void> deleteCustomer(int id) async {
     final db = await databaseHelper.database;
-    await db.delete('customers', where: 'id = ?', whereArgs: [id]);
+    await db.update('customers', 
+      {
+        'isDeleted': 1
+      },
+      where: 'id = ?', whereArgs: [id]
+    );
   }
 
    Future<void> seedData() async {
@@ -49,9 +56,9 @@ class CustomerLocalStorage {
     if (count == 0) {
       // List of initial customers to seed
       final initialCustomers = [
-        CustomerModel(id: 1, name: "John Doe", phone: "1234567890"),
-        CustomerModel(id: 2, name: "Jane Smith", phone: "0987654321"),
-        CustomerModel(id: 3, name: "Alice Johnson", phone: "5555555555"),
+        CustomerModel(name: "John Doe", phone: "1234567890"),
+        CustomerModel(name: "Jane Smith", phone: "0987654321"),
+        CustomerModel(name: "Alice Johnson", phone: "5555555555"),
       ];
 
       // Insert each customer into the database

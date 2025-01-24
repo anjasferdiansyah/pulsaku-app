@@ -47,5 +47,14 @@ class TransactionRepositoryImpl implements TransactionRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> updateTransaction(int id) {
+    try {
+      return localStorage.updateTransaction(id);
+    } catch (e) {
+      rethrow;
+    }
+  }
   
 }

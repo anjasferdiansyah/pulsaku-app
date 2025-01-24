@@ -4,11 +4,13 @@ class Customer extends Equatable {
   final int? id;
   final String? name;
   final String? phone;
+  final bool? isDeleted;
 
 const Customer({
     this.id,
     required this.name,
     required this.phone,
+    this.isDeleted
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,7 @@ const Customer({
       id: json['id'],
       name: json['name'],
       phone: json['phone'],
+      isDeleted: json['isDeleted'],
     );
   }
 
@@ -24,6 +27,7 @@ const Customer({
       'id': id,
       'name': name,
       'phone': phone,
+      'isDeleted': isDeleted
     };
   }
 
@@ -33,6 +37,7 @@ const Customer({
       id: map['id'] as int?,
       name: map['name'],
       phone: map['phone'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -41,11 +46,12 @@ const Customer({
       'id': id,
       'name': name,
       'phone': phone,
+      'isDeleted': isDeleted
     };
   }
 
   @override
-  List<Object?> get props => [id, name, phone];
+  List<Object?> get props => [id, name, phone, isDeleted];
 
   @override
   bool get stringify => true; // Optional: If you want object to print in readable format
